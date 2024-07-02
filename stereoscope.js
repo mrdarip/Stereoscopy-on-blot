@@ -8,45 +8,6 @@ const height = 125;
 
 setDocDimensions(width, height);
 
-// store final lines here
-const finalLines = [];
-
-let p = [
-  get(0, 0, 0),
-  get(1, 0, 0),
-  get(1, 0, 2),
-  get(0, 0, 2),
-  get(0, 7, 0),
-  get(1, 7, 0),
-  get(1, 7, 2),
-  get(0, 7, 2),
-];
-
-// and then let's draw its wireframe
-for (let i = 0; i < 4; i++) {
-  finalLines.push(p[i].toArray())
-  finalLines.push(p[(i + 1) % 4].toArray())
-
-  finalLines.push(p[4 + i].toArray())
-  finalLines.push(p[4 + (i + 1) % 4].toArray())
-
-  finalLines.push(p[i].toArray())
-  finalLines.push(p[4 + i])
-  /*
-  line(p[i],     p[(i+1)%4]);
-  line(p[4 + i], p[4 + (i+1)%4]);
-  line(p[i],     p[4 + i]);*/
-}
-
-// draw it
-drawLines(finalLines);
-
-
-
-
-
-
-
 class Vec2 {
   constructor(x, y) {
     this.x = x;
@@ -70,6 +31,7 @@ class Vec2 {
     let b2 = l2p1.x - l2p2.x;
     let c2 = a2 * l2p1.x + b2 * l2p1.y;
     let det = a1 * b2 - a2 * b1;
+
     if (det === 0) {
       return null; // the lines are parallel
     } else {
@@ -93,7 +55,7 @@ class Vec2 {
 }
 
 const C = new Vec2(10, 15);
-const X = new Vec2(10, 0);
+const X = new Vec2(20, 0);
 const Z = new Vec2(30, 0);
 const HC = Vec2.lli(C, C.plus(0, 10), Z, X); // C projected onto the horizon Z--X.
 const dyC = C.y - HC.y; // The y-distance in screen pixels between C and its projection.
@@ -101,6 +63,42 @@ const yScale = 5.0; // This determines what height is drawn as "level" to the vi
 const yFactor = dyC / yScale; // By how much we need to scale world.y to get screen.y?
 
 const PERSPECTIVE_FACTOR = 0.25;
+
+
+// store final lines here
+const finalLines = [];
+
+let p = [
+  get(0, 0, 0).toArray(),
+  get(1, 0, 0).toArray(),
+  get(1, 0, 2).toArray(),
+  get(0, 0, 2).toArray(),
+  get(0, 0, 0).toArray(),
+  get(1, 0, 0).toArray(),
+  get(1, 0, 2).toArray(),
+  get(0, 0, 2).toArray(),
+];
+
+// and then let's draw its wireframe
+for (let i = 0; i < 4; i++) {
+  finalLines.push(p[i])
+  finalLines.push(p[(i + 1) % 4])
+
+  finalLines.push(p[4 + i])
+  finalLines.push(p[4 + (i + 1) % 4])
+
+  finalLines.push(p[i])
+  finalLines.push(p[4 + i])
+  /*
+  line(p[i],     p[(i+1)%4]);
+  line(p[4 + i], p[4 + (i+1)%4]);
+  line(p[i],     p[4 + i]);*/
+}
+
+// draw it
+drawLines(finalLines);
+
+
 
 function stepToDistanceRatio(s) {
   return 1.0 - 1.0 / (1.0 + PERSPECTIVE_FACTOR * s);
@@ -120,6 +118,7 @@ function get(x, y, z) {
   let rx = inZ ? (ground.x - Z.x) / (C.x - Z.x) : (X.x - ground.x) / (X.x - C.x);
 
   let onAxis = Vec2.lli(inZ ? Z : X, C, ground, ground.plus(0, 10));
+
   let ry = (ground.y - HC.y) / (onAxis.y - HC.y);
 
   return ground.minus(0, rx * ry * y * yFactor);
