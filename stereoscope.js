@@ -11,6 +11,33 @@ setDocDimensions(width, height);
 // store final lines here
 const finalLines = [];
 
+let p = [
+  get(0, 0, 0),
+  get(1, 0, 0),
+  get(1, 0, 2),
+  get(0, 0, 2),
+  get(0, 7, 0),
+  get(1, 7, 0),
+  get(1, 7, 2),
+  get(0, 7, 2),
+];
+
+// and then let's draw its wireframe
+for (let i = 0; i < 4; i++) {
+  finalLines.push(p[i].toArray())
+  finalLines.push(p[(i + 1) % 4].toArray())
+
+  finalLines.push(p[4 + i].toArray())
+  finalLines.push(p[4 + (i + 1) % 4].toArray())
+
+  finalLines.push(p[i].toArray())
+  finalLines.push(p[4 + i])
+  /*
+  line(p[i],     p[(i+1)%4]);
+  line(p[4 + i], p[4 + (i+1)%4]);
+  line(p[i],     p[4 + i]);*/
+}
+
 // draw it
 drawLines(finalLines);
 
@@ -59,15 +86,19 @@ class Vec2 {
   minus(dx, dy) {
     return new Vec2(this.x - dx, this.y - dy);
   }
+
+  toArray() {
+    return [this.x, this.y]
+  }
 }
 
 const C = new Vec2(10, 15);
 const X = new Vec2(10, 0);
 const Z = new Vec2(30, 0);
-const HC = Vec2.lli(C, C.plus(0,10), Z, X); // C projected onto the horizon Z--X.
-const dyC = C.y - HC.y;              // The y-distance in screen pixels between C and its projection.
-const yScale = 5.0;                  // This determines what height is drawn as "level" to the viewer.
-const yFactor = dyC / yScale;        // By how much we need to scale world.y to get screen.y?
+const HC = Vec2.lli(C, C.plus(0, 10), Z, X); // C projected onto the horizon Z--X.
+const dyC = C.y - HC.y; // The y-distance in screen pixels between C and its projection.
+const yScale = 5.0; // This determines what height is drawn as "level" to the viewer.
+const yFactor = dyC / yScale; // By how much we need to scale world.y to get screen.y?
 
 const PERSPECTIVE_FACTOR = 0.25;
 
@@ -76,20 +107,20 @@ function stepToDistanceRatio(s) {
 }
 
 function get(x, y, z) {
-    
-    if (x === 0 && y === 0 && z === 0) return C;
 
-    let px = Vec2.lerp(C, X, stepToDistanceRatio(x));
-    let pz = Vec2.lerp(C, Z, stepToDistanceRatio(z));
-    let ground = Vec2.lli(X, pz, Z, px);
-    if (y == 0) return ground;
+  if (x === 0 && y === 0 && z === 0) return C;
 
-    let inZ = (ground.x < C.x);
+  let px = Vec2.lerp(C, X, stepToDistanceRatio(x));
+  let pz = Vec2.lerp(C, Z, stepToDistanceRatio(z));
+  let ground = Vec2.lli(X, pz, Z, px);
+  if (y == 0) return ground;
 
-    let rx = inZ ? (ground.x - Z.x) / (C.x - Z.x) : (X.x - ground.x) / (X.x - C.x);
+  let inZ = (ground.x < C.x);
 
-    let onAxis = Vec2.lli(inZ ? Z : X, C, ground, ground.plus(0, 10));
-    let ry = (ground.y - HC.y) / (onAxis.y - HC.y);
+  let rx = inZ ? (ground.x - Z.x) / (C.x - Z.x) : (X.x - ground.x) / (X.x - C.x);
 
-    return ground.minus(0, rx * ry * y * yFactor);
+  let onAxis = Vec2.lli(inZ ? Z : X, C, ground, ground.plus(0, 10));
+  let ry = (ground.y - HC.y) / (onAxis.y - HC.y);
+
+  return ground.minus(0, rx * ry * y * yFactor);
 }
