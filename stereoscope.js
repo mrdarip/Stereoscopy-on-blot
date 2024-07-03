@@ -54,14 +54,6 @@ class Vec2 {
   }
 }
 
-const C = new Vec2(width / 4, 2*height / 5);
-const X = new Vec2(0, 3*height / 5);
-const Z = new Vec2(width / 2, 3*height / 5);
-const HC = Vec2.lli(C, C.plus(0, 10), Z, X); // C projected onto the horizon Z--X.
-const dyC = C.y - HC.y; // The y-distance in screen pixels between C and its projection.
-const yScale = 5.0; // This determines what height is drawn as "level" to the viewer.
-const yFactor = dyC / yScale; // By how much we need to scale world.y to get screen.y?
-
 const PERSPECTIVE_FACTOR = 0.25;
 
 
@@ -69,14 +61,14 @@ const PERSPECTIVE_FACTOR = 0.25;
 var finalLines = [];
 
 let p = [
-  get(0, 0, 0).toArray(),
-  get(1, 0, 0).toArray(),
-  get(1, 0, 2).toArray(),
-  get(0, 0, 2).toArray(),
-  get(0, 7, 0).toArray(),
-  get(1, 7, 0).toArray(),
-  get(1, 7, 2).toArray(),
-  get(0, 7, 2).toArray(),
+  get(0, 0, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(1, 0, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(1, 0, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(0, 0, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(0, 7, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(1, 7, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(1, 7, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(0, 7, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
 ];
 
 
@@ -94,7 +86,7 @@ for (let i = 0; i < 4; i++) {
 }
 console.log(finalLines)
 // draw it
-drawLines([finalLines, circleAt(C.x, C.y, 1, 50), circleAt(X.x, X.y, 1, 50), circleAt(Z.x, Z.y, 1, 50)]);
+drawLines([finalLines]);
 
 
 function circleAt(x, y, r, n) {
@@ -113,20 +105,25 @@ function stepToDistanceRatio(s) {
   return 1.0 - 1.0 / (1.0 + PERSPECTIVE_FACTOR * s);
 }
 
-function get(x, y, z) {
+function get(x, y, z, vX, vZ, vC) {
 
-  if (x === 0 && y === 0 && z === 0) return C;
+  if (x === 0 && y === 0 && z === 0) return vC;
 
-  let px = Vec2.lerp(C, X, stepToDistanceRatio(x));
-  let pz = Vec2.lerp(C, Z, stepToDistanceRatio(z));
-  let ground = Vec2.lli(X, pz, Z, px);
+  const HC = Vec2.lli(vC, vC.plus(0, 10), vZ, vX); // C projected onto the horizon Z--X.
+  const dyC = vC.y - HC.y; // The y-distance in screen pixels between C and its projection.
+  const yScale = 5.0; // This determines what height is drawn as "level" to the viewer.
+  const yFactor = dyC / yScale; // By how much we need to scale world.y to get screen.y?
+
+  let px = Vec2.lerp(vC, vX, stepToDistanceRatio(x));
+  let pz = Vec2.lerp(vC, vZ, stepToDistanceRatio(z));
+  let ground = Vec2.lli(vX, pz, vZ, px);
   if (y == 0) return ground;
 
-  let inZ = (ground.x < C.x);
+  let inZ = (ground.x < vC.x);
 
-  let rx = inZ ? (ground.x - Z.x) / (C.x - Z.x) : (X.x - ground.x) / (X.x - C.x);
+  let rx = inZ ? (ground.x - vZ.x) / (vC.x - vZ.x) : (vX.x - ground.x) / (vX.x - vC.x);
 
-  let onAxis = Vec2.lli(inZ ? Z : X, C, ground, ground.plus(0, 10));
+  let onAxis = Vec2.lli(inZ ? vZ : vX, vC, ground, ground.plus(0, 10));
 
   let ry = (ground.y - HC.y) / (onAxis.y - HC.y);
 
