@@ -82,18 +82,7 @@ let edges = [
   [2, 6]
 ];
 
-
-// and then let's draw its wireframe
-
-for (let edge of edges) {
-  let line = [];
-  for (let i = 0; i < edge.length - 1; i++) {
-    line.push(vertices[edge[i]]);
-    line.push(vertices[edge[i + 1]]);
-  }
-  finalLines.push(line);
-}
-
+finalLines = finalLines.concat(drawMesh(vertices,edges));
 
 finalLines.push([
   [width / 2, 0],
@@ -118,6 +107,20 @@ function circleAt(x, y, r, n) {
   }
   console.log(polyline)
   return polyline
+}
+
+function drawMesh(vertices, edges) {
+  let polyLines = []
+  for (let edge of edges) {
+    let line = [];
+    for (let i = 0; i < edge.length - 1; i++) {
+      line.push(vertices[edge[i]]);
+      line.push(vertices[edge[i + 1]]);
+    }
+    polyLines.push(line);
+  }
+
+  return polyLines;
 }
 
 function stepToDistanceRatio(s) {
