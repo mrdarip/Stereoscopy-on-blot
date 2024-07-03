@@ -64,7 +64,7 @@ let X = new Vec2(0, 3 * height / 5);
 let Z = new Vec2(width / 2, 3 * height / 5);
 let C = new Vec2(width / 4, 2 * height / 5);
 
-let p = [
+let vertices = [
   get(0, 0, 0, X, Z, C).toArray(),
   get(1, 0, 0, X, Z, C).toArray(),
   get(1, 0, 2, X, Z, C).toArray(),
@@ -75,22 +75,27 @@ let p = [
   get(0, 7, 2, X, Z, C).toArray(),
 ];
 
+let edges = [
+  [0, 1, 5, 4, 0, 3, 7, 4],
+  [1, 2, 3],
+  [5, 6, 7],
+  [2, 6]
+];
+
 
 // and then let's draw its wireframe
 
-for (let i = 0; i < 4; i++) {
-  finalLines.push(p[i])
-  finalLines.push(p[(i + 1) % 4])
-
-  finalLines.push(p[4 + i])
-  finalLines.push(p[4 + (i + 1) % 4])
-
-  finalLines.push(p[i])
-  finalLines.push(p[4 + i])
+for (let edge of edges) {
+  let line = [];
+  for (let i = 0; i < edge.length - 1; i++) {
+    line.push(vertices[edge[i]]);
+    line.push(vertices[edge[i + 1]]);
+  }
+  finalLines.push(line);
 }
 console.log(finalLines)
 // draw it
-drawLines([finalLines]);
+drawLines(finalLines);
 
 
 function circleAt(x, y, r, n) {
