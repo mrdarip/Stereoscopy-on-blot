@@ -54,9 +54,9 @@ class Vec2 {
   }
 }
 
-const C = new Vec2(width / 4, 10);
-const X = new Vec2(0, 100);
-const Z = new Vec2(width / 2, 100);
+const C = new Vec2(width / 4, 2*height / 5);
+const X = new Vec2(0, 3*height / 5);
+const Z = new Vec2(width / 2, 3*height / 5);
 const HC = Vec2.lli(C, C.plus(0, 10), Z, X); // C projected onto the horizon Z--X.
 const dyC = C.y - HC.y; // The y-distance in screen pixels between C and its projection.
 const yScale = 5.0; // This determines what height is drawn as "level" to the viewer.
@@ -94,7 +94,7 @@ for (let i = 0; i < 4; i++) {
 }
 console.log(finalLines)
 // draw it
-drawLines([finalLines, circleAt(C.x, C.y, 10, 50), circleAt(X.x, X.y, 10, 50), circleAt(Z.x, Z.y, 10, 50)]);
+drawLines([finalLines, circleAt(C.x, C.y, 1, 50), circleAt(X.x, X.y, 1, 50), circleAt(Z.x, Z.y, 1, 50)]);
 
 
 function circleAt(x, y, r, n) {
