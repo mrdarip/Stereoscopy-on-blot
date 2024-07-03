@@ -60,15 +60,19 @@ const PERSPECTIVE_FACTOR = 0.25;
 // store final lines here
 var finalLines = [];
 
+let X = new Vec2(0, 3 * height / 5);
+let Z = new Vec2(width / 2, 3 * height / 5);
+let C = new Vec2(width / 4, 2 * height / 5);
+
 let p = [
-  get(0, 0, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(1, 0, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(1, 0, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(0, 0, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(0, 7, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(1, 7, 0, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(1, 7, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
-  get(0, 7, 2, new Vec2(0, 3 * height / 5), new Vec2(width / 2, 3 * height / 5), new Vec2(width / 4, 2 * height / 5)).toArray(),
+  get(0, 0, 0, X, Z, C).toArray(),
+  get(1, 0, 0, X, Z, C).toArray(),
+  get(1, 0, 2, X, Z, C).toArray(),
+  get(0, 0, 2, X, Z, C).toArray(),
+  get(0, 7, 0, X, Z, C).toArray(),
+  get(1, 7, 0, X, Z, C).toArray(),
+  get(1, 7, 2, X, Z, C).toArray(),
+  get(0, 7, 2, X, Z, C).toArray(),
 ];
 
 
