@@ -54,9 +54,9 @@ class Vec2 {
   }
 }
 
-const C = new Vec2(50, 0);
+const C = new Vec2(width / 4, 10);
 const X = new Vec2(0, 100);
-const Z = new Vec2(100, 100);
+const Z = new Vec2(width / 2, 100);
 const HC = Vec2.lli(C, C.plus(0, 10), Z, X); // C projected onto the horizon Z--X.
 const dyC = C.y - HC.y; // The y-distance in screen pixels between C and its projection.
 const yScale = 5.0; // This determines what height is drawn as "level" to the viewer.
@@ -94,10 +94,20 @@ for (let i = 0; i < 4; i++) {
 }
 console.log(finalLines)
 // draw it
-drawLines([finalLines]);
+drawLines([finalLines, circleAt(C.x, C.y, 10, 50), circleAt(X.x, X.y, 10, 50), circleAt(Z.x, Z.y, 10, 50)]);
 
 
-
+function circleAt(x, y, r, n) {
+  let polyline = []
+  for (let i = 0; i <= n; i++) {
+    polyline.push([
+      x + Math.cos(2 * Math.PI * i / n) * r,
+      y + Math.sin(2 * Math.PI * i / n) * r
+    ])
+  }
+  console.log(polyline)
+  return polyline
+}
 
 function stepToDistanceRatio(s) {
   return 1.0 - 1.0 / (1.0 + PERSPECTIVE_FACTOR * s);
