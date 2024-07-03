@@ -93,6 +93,16 @@ for (let edge of edges) {
   }
   finalLines.push(line);
 }
+
+
+finalLines.push([
+  [width / 2, 0],
+  [width / 2, height]
+]); //vertical line for dividing
+
+finalLines.push(circleAt(width / 4, height / 5, 2, 100))
+finalLines.push(circleAt(3 * width / 4, height / 5, 2, 100)); //circles for stereoscopy reference
+
 console.log(finalLines)
 // draw it
 drawLines(finalLines);
