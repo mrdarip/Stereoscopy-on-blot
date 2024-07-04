@@ -77,7 +77,7 @@ let horizonRight = new Vec2(width, 3 * height / 5);
 let groundLeft = new Vec2(width / 4 + eyesSeparation, 2 * height / 5);
 let groundRight = new Vec2(3 * width / 4 - eyesSeparation, 2 * height / 5);
 
-var resolution = 4;
+var resolution = 10;
 //plane
 let vertices = [];
 for (let y = 0; y < resolution; y++) {
@@ -86,17 +86,12 @@ for (let y = 0; y < resolution; y++) {
   }
 }
 //plane
-let edges = [
-  [0, 1, 5, 4, 0],
-  [1, 2, 6, 5, 1],
-  [2, 3, 7, 6, 2],
-  [4, 5, 9, 8, 4],
-  [5, 6, 10, 9, 5],
-  [6, 7, 11, 10, 6],
-  [8, 9, 13, 12, 8],
-  [9, 10, 14, 13, 9],
-  [10, 11, 15, 14, 10],
-];
+let edges = [];
+for (let y = 0; y < resolution - 1; y++) {
+  for (let x = 0; x < resolution - 1; x++) {
+    edges.push([x + (y * resolution), x + (y * resolution) + 1, x + ((y + 1) * resolution) + 1, x + ((y + 1) * resolution), x + (y * resolution)])
+  }
+}
 
 finalLines = finalLines.concat(drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft));
 finalLines = finalLines.concat(drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight));
