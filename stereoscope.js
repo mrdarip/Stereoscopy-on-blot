@@ -54,6 +54,14 @@ class Vec2 {
   }
 }
 
+class Vec3 {
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+}
+
 const PERSPECTIVE_FACTOR = 0.25;
 
 
@@ -65,14 +73,14 @@ let Z = new Vec2(width / 2, 3 * height / 5);
 let C = new Vec2(width / 4, 2 * height / 5);
 
 let vertices = [
-  get(0, 0, 0, X, Z, C).toArray(),
-  get(1, 0, 0, X, Z, C).toArray(),
-  get(1, 0, 2, X, Z, C).toArray(),
-  get(0, 0, 2, X, Z, C).toArray(),
-  get(0, 7, 0, X, Z, C).toArray(),
-  get(1, 7, 0, X, Z, C).toArray(),
-  get(1, 7, 2, X, Z, C).toArray(),
-  get(0, 7, 2, X, Z, C).toArray(),
+  new Vec3(0, 0, 0),
+  new Vec3(1, 0, 0),
+  new Vec3(1, 0, 2),
+  new Vec3(0, 0, 2),
+  new Vec3(0, 7, 0),
+  new Vec3(1, 7, 0),
+  new Vec3(1, 7, 2),
+  new Vec3(0, 7, 2),
 ];
 
 let edges = [
@@ -82,7 +90,7 @@ let edges = [
   [2, 6]
 ];
 
-finalLines = finalLines.concat(drawMesh(vertices,edges));
+finalLines = finalLines.concat(drawMesh(vertices, edges));
 
 finalLines.push([
   [width / 2, 0],
@@ -109,7 +117,12 @@ function circleAt(x, y, r, n) {
   return polyline
 }
 
-function drawMesh(vertices, edges) {
+function drawMesh(v3vertices, edges) {
+  var vertices = [];
+  for (let vertice of v3vertices) {
+    vertices.push(get(vertice.x, vertice.y, vertice.z, X, Z, C).toArray());
+  }
+
   let polyLines = []
   for (let edge of edges) {
     let line = [];
