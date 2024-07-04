@@ -68,12 +68,14 @@ const PERSPECTIVE_FACTOR = 0.25;
 // store final lines here
 var finalLines = [];
 
+let eyesSeparation = 1;
+
 let horizonLeft = new Vec2(0, 3 * height / 5);
 let horizonCenter = new Vec2(width / 2, 3 * height / 5);
 let horizonRight = new Vec2(width, 3 * height / 5);
 
-let groundLeft = new Vec2(width / 4, 2 * height / 5);
-let groundRight = new Vec2(3 * width / 4, 2 * height / 5);
+let groundLeft = new Vec2(width / 4 + eyesSeparation, 2 * height / 5);
+let groundRight = new Vec2(3 * width / 4 - eyesSeparation, 2 * height / 5);
 
 let vertices = [
   new Vec3(0, 0, 0),
