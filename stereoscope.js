@@ -68,9 +68,9 @@ const PERSPECTIVE_FACTOR = 0.25;
 // store final lines here
 var finalLines = [];
 
-let X = new Vec2(0, 3 * height / 5);
-let Z = new Vec2(width / 2, 3 * height / 5);
-let C = new Vec2(width / 4, 2 * height / 5);
+let horizonLeft = new Vec2(0, 3 * height / 5);
+let horizonCenter = new Vec2(width / 2, 3 * height / 5);
+let groundLeft = new Vec2(width / 4, 2 * height / 5);
 
 let vertices = [
   new Vec3(0, 0, 0),
@@ -90,7 +90,7 @@ let edges = [
   [2, 6]
 ];
 
-finalLines = finalLines.concat(drawMesh(vertices, edges));
+finalLines = finalLines.concat(drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft));
 
 finalLines.push([
   [width / 2, 0],
@@ -117,7 +117,7 @@ function circleAt(x, y, r, n) {
   return polyline
 }
 
-function drawMesh(v3vertices, edges) {
+function drawMesh(v3vertices, edges, X, Z, C) {
   var vertices = [];
   for (let vertice of v3vertices) {
     vertices.push(get(vertice.x, vertice.y, vertice.z, X, Z, C).toArray());
