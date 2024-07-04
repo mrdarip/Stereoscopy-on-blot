@@ -77,10 +77,11 @@ let horizonRight = new Vec2(width, 3 * height / 5);
 let groundLeft = new Vec2(width / 4 + eyesSeparation, 2 * height / 5);
 let groundRight = new Vec2(3 * width / 4 - eyesSeparation, 2 * height / 5);
 
+var resolution = 4;
 //plane
 let vertices = [];
-for (let y = 0; y < 4; y++) {
-  for (let x = 0; x < 4; x++) {
+for (let y = 0; y < resolution; y++) {
+  for (let x = 0; x < resolution; x++) {
     vertices.push(new Vec3(x, 0, y));
   }
 }
