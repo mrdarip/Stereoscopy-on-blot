@@ -77,26 +77,46 @@ let horizonRight = new Vec2(width, 3 * height / 5);
 let groundLeft = new Vec2(width / 4 + eyesSeparation, 2 * height / 5);
 let groundRight = new Vec2(3 * width / 4 - eyesSeparation, 2 * height / 5);
 
+//plane
 let vertices = [
-  new Vec3(0, 0, 0),
-  new Vec3(1, 0, 0),
-  new Vec3(1, 0, 2),
-  new Vec3(0, 0, 2),
-  new Vec3(0, 7, 0),
-  new Vec3(1, 7, 0),
-  new Vec3(1, 7, 2),
-  new Vec3(0, 7, 2),
+  new Vec3(2.5, 0.5, 3),
+  new Vec3(4.36784, 0.2474, 2.60121),
+  new Vec3(4.4469, 1.02674, 3.04893),
+  new Vec3(4.65193, 1.02674, 2.24624),
+  new Vec3(4.15849, 1.03212, 4.08764),
+  new Vec3(4.89698, 1.03212, 1.19646),
+];
+//plane
+let edges = [
+  [0,3,5,0,2,4,0,1],
+  [3,1,2],
+  [0,1]
 ];
 
-let edges = [
-  [0, 1, 5, 4, 0, 3, 7, 4],
-  [1, 2, 3],
-  [5, 6, 7],
-  [2, 6]
+//boat
+let vertices2 = [
+  new Vec3(1.05764,2.79815,2.70006),
+  new Vec3(1.05598,0,1.32059),
+  new Vec3(1.05599,0,4.06706),
+new Vec3(1.05434,1.10791,5.43973),
+  new Vec3(1.05434,1.1,0),
+  new Vec3(2.10459,1.10791,1.32),
+  new Vec3(2.1,1.1,4.06),
+  new Vec3(0,1.08,4.06),
+  new Vec3(0,1.32,1.1),
+];
+//boat
+let edges2 = [
+  [4,1,0,2,3,6,5,4,8,7,3],
+  [8,1,5],
+  [6,2,7]
 ];
 
 finalLines = finalLines.concat(drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft));
 finalLines = finalLines.concat(drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight));
+
+finalLines = finalLines.concat(drawMesh(vertices2, edges2, horizonLeft, horizonCenter, groundLeft));
+finalLines = finalLines.concat(drawMesh(vertices2, edges2, horizonCenter, horizonRight, groundRight));
 
 finalLines.push([
   [width / 2, 0],
