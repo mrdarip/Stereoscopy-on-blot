@@ -82,7 +82,7 @@ var resolution = 10;
 let vertices = [];
 for (let y = 0; y < resolution; y++) {
   for (let x = 0; x < resolution; x++) {
-    vertices.push(new Vec3(x, 0, y));
+    vertices.push(new Vec3(x, bt.noise([x,y])*3, y));
   }
 }
 //plane
