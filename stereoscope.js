@@ -82,7 +82,7 @@ var resolution = 10;
 let vertices = [];
 for (let y = 0; y < resolution; y++) {
   for (let x = 0; x < resolution; x++) {
-    vertices.push(new Vec3(x, Math.cos(x) + Math.sin(y), y));
+    vertices.push(new Vec3(x, -4 * (Math.cos(x) + Math.cos(y)) / (Math.sqrt(Math.pow(x - 3, 2) + Math.pow(y - 3, 2) + 1)), y))
   }
 }
 //plane
