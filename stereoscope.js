@@ -15,12 +15,8 @@ class Vec2 {
   }
 
   static lerp(a, b, t) {
-    return new Vec2(
-      a.x + (b.x - a.x) * t,
-      a.y + (b.y - a.y) * t
-    );
+    return new Vec2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
   }
-
 
   // line-line intersection
   static lli(l1p1, l1p2, l2p1, l2p2) {
@@ -50,7 +46,7 @@ class Vec2 {
   }
 
   toArray() {
-    return [this.x, this.y]
+    return [this.x, this.y];
   }
 }
 
@@ -64,60 +60,67 @@ class Vec3 {
 
 const PERSPECTIVE_FACTOR = 0.25;
 
-
 // store final lines here
 var finalLines = [];
 
 let eyesSeparation = 1;
 
-let horizonLeft = new Vec2(0, 3 * height / 5);
-let horizonCenter = new Vec2(width / 2, 3 * height / 5);
-let horizonRight = new Vec2(width, 3 * height / 5);
+let horizonLeft = new Vec2(0, (3 * height) / 5);
+let horizonCenter = new Vec2(width / 2, (3 * height) / 5);
+let horizonRight = new Vec2(width, (3 * height) / 5);
 
-let groundLeft = new Vec2(width / 4 + eyesSeparation, 2 * height / 5);
-let groundRight = new Vec2(3 * width / 4 - eyesSeparation, 2 * height / 5);
+let groundLeft = new Vec2(width / 4 + eyesSeparation, (2 * height) / 5);
+let groundRight = new Vec2((3 * width) / 4 - eyesSeparation, (2 * height) / 5);
 
-var resolution = 10;
+var resolution = 11;
 //plane
 let vertices = [];
 for (let y = 0; y < resolution; y++) {
   for (let x = 0; x < resolution; x++) {
-    vertices.push(new Vec3(x, -4 * (Math.cos(x) + Math.cos(y)) / (Math.sqrt(Math.pow(x - 3, 2) + Math.pow(y - 3, 2) + 1)), y))
+    vertices.push(new Vec3(x, heightFromPos(x - 3, y - 3, 4), y));
   }
 }
 //plane
 let edges = [];
 for (let y = 0; y < resolution - 1; y++) {
   for (let x = 0; x < resolution - 1; x++) {
-    edges.push([x + (y * resolution), x + (y * resolution) + 1, x + ((y + 1) * resolution) + 1, x + ((y + 1) * resolution), x + (y * resolution)])
+    edges.push([
+      x + y * resolution,
+      x + y * resolution + 1,
+      x + (y + 1) * resolution + 1,
+      x + (y + 1) * resolution,
+      x + y * resolution,
+    ]);
   }
 }
 
-finalLines = finalLines.concat(drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft));
-finalLines = finalLines.concat(drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight));
+finalLines.push(
+  ...drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft)
+);
+finalLines.push(
+  ...drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight)
+);
 
 finalLines.push([
   [width / 2, 0],
-  [width / 2, height]
+  [width / 2, height],
 ]); //vertical line for dividing
 
-finalLines.push(circleAt(width / 4, height / 5, 2, 100))
-finalLines.push(circleAt(3 * width / 4, height / 5, 2, 100)); //circles for stereoscopy reference
+finalLines.push(circleAt(width / 4, height / 5, 2, 100));
+finalLines.push(circleAt((3 * width) / 4, height / 5, 2, 100)); //circles for stereoscopy reference
 
 // draw it
 drawLines(finalLines);
 
-
 function circleAt(x, y, r, n) {
-  let polyline = []
+  let polyline = [];
   for (let i = 0; i <= n; i++) {
     polyline.push([
-      x + Math.cos(2 * Math.PI * i / n) * r,
-      y + Math.sin(2 * Math.PI * i / n) * r
-    ])
+      x + Math.cos((2 * Math.PI * i) / n) * r,
+      y + Math.sin((2 * Math.PI * i) / n) * r,
+    ]);
   }
-  console.log(polyline)
-  return polyline
+  return polyline;
 }
 
 function drawMesh(v3vertices, edges, X, Z, C) {
@@ -126,7 +129,7 @@ function drawMesh(v3vertices, edges, X, Z, C) {
     vertices.push(get(vertice.x, vertice.y, vertice.z, X, Z, C).toArray());
   }
 
-  let polyLines = []
+  let polyLines = [];
   for (let edge of edges) {
     let line = [];
     for (let i = 0; i < edge.length - 1; i++) {
@@ -143,8 +146,15 @@ function stepToDistanceRatio(s) {
   return 1.0 - 1.0 / (1.0 + PERSPECTIVE_FACTOR * s);
 }
 
-function get(x, y, z, vX, vZ, vC) {
+function heightFromPos(x, y, a) {
+  //this is the function that defines the height of the planeº
+  return (
+    (a * (Math.cos(x) + Math.cos(y))) /
+    Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + 1)
+  );
+}
 
+function get(x, y, z, vX, vZ, vC) {
   if (x === 0 && y === 0 && z === 0) return vC;
 
   const HC = Vec2.lli(vC, vC.plus(0, 10), vZ, vX); // C projected onto the horizon Z--X.
@@ -157,9 +167,11 @@ function get(x, y, z, vX, vZ, vC) {
   let ground = Vec2.lli(vX, pz, vZ, px);
   if (y == 0) return ground;
 
-  let inZ = (ground.x < vC.x);
+  let inZ = ground.x < vC.x;
 
-  let rx = inZ ? (ground.x - vZ.x) / (vC.x - vZ.x) : (vX.x - ground.x) / (vX.x - vC.x);
+  let rx = inZ
+    ? (ground.x - vZ.x) / (vC.x - vZ.x)
+    : (vX.x - ground.x) / (vX.x - vC.x);
 
   let onAxis = Vec2.lli(inZ ? vZ : vX, vC, ground, ground.plus(0, 10));
 
