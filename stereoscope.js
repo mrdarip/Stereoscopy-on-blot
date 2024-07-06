@@ -101,6 +101,32 @@ finalLines.push(
   ...drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight)
 );
 
+
+//plane
+vertices = [
+  new Vec3(6.5, 5, 3),
+  new Vec3(8.36784, 5, 2.60121),
+  new Vec3(8.4469, 6.02674, 3.04893),
+  new Vec3(8.65193, 6.02674, 2.24624),
+  new Vec3(8.15849, 6.53212, 4.08764),
+  new Vec3(8.89698, 6.53486, 1.19646),
+];
+//plane
+edges = [
+  [0, 3, 5, 0, 2, 4, 0, 1],
+  [3, 1, 2],
+  [0, 1]
+];
+
+finalLines.push(
+  ...drawMesh(vertices, edges, horizonLeft, horizonCenter, groundLeft)
+);
+finalLines.push(
+  ...drawMesh(vertices, edges, horizonCenter, horizonRight, groundRight)
+);
+
+
+
 finalLines.push([
   [width / 2, 0],
   [width / 2, height],
