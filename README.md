@@ -13,3 +13,10 @@ What I have in mind is:
 There is [many ways](https://en.wikipedia.org/wiki/3D_projection#/media/File:Comparison_of_graphical_projections.svg) to convert a 3D point to 2D, the easier would be an Isometric projection, but as [I want to get a feeling of deph](https://en.wikipedia.org/wiki/3D_projection#Limitations_of_parallel_projection) for the stereoscopy, I'll stick to a projection with perspective, a 2-point projection.
 
 I'll follow [this](https://pomax.github.io/three-point-perspective/) tutorial as it gives a great explanation for how to get a 2-point perspective projection.
+
+## After finishing my project this is how it looked like
+
+![stereoscopyPreview](https://github.com/hackclub/blot/assets/61890952/647b0de3-39ab-4f42-a631-16203adb9b44)
+It works pretty much like an [autostereogram](https://en.wikipedia.org/wiki/Autostereogram), you have to cross you eyes
+
+## [Pull Request](https://github.com/hackclub/blot/pull/640)
