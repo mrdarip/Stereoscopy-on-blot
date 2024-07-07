@@ -16,7 +16,7 @@ I'll follow [this](https://pomax.github.io/three-point-perspective/) tutorial as
 
 ## After finishing my project this is how it looked like
 
-![stereoscopyPreview](https://github.com/hackclub/blot/assets/61890952/647b0de3-39ab-4f42-a631-16203adb9b44)
+![stereoscopyPreview](https://github.com/hackclub/blot/assets/61890952/647b0de3-39ab-4f42-a631-16203adb9b44)  
 It works pretty much like an [autostereogram](https://en.wikipedia.org/wiki/Autostereogram), you have to cross you eyes
 
 ## [Pull Request](https://github.com/hackclub/blot/pull/640)
