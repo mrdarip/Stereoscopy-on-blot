@@ -1,6 +1,8 @@
 # Stereoscopy on Blot
 This is my exercise to learn to use [Blot](https://blot.hackclub.com/) and one of my first 3D rendering projects too!
 
+preview it at <https://blot.hackclub.com/editor?shareId=f3210228-5735-42f7-955c-056d849e2a43>
+
 ## So, The Idea
 
 What I have in mind is:
